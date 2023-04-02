@@ -1,3 +1,7 @@
+//https://easyeda.com/components/5011AS-7-Segment-Display_0a0ce76fbaa8485891155d0c10b4e91b
+//https://www.st.com/resource/en/user_manual/dm00190424-discovery-kit-for-stm32f7-series-with-stm32f746ng-mcu-stmicroelectronics.pdf - Page 23
+//https://www.electronics-tutorials.ws/blog/7-segment-display-tutorial.html
+
 #include <stdio.h>
 #include "stm32f7xx_hal.h"
 #include "GLCD_Config.h"
@@ -16,6 +20,27 @@ uint32_t HAL_GetTick(void) {
 	return os_time;
 }
 #endif
+
+
+
+GPIO_InitTypeDef gpioD0;
+
+void initialisePins(void) {
+	
+	// Enabling clock for C base
+	__HAL_RCC_GPIOC_CLK_ENABLE();
+
+	// Set mode as output, nopull
+	gpioD0.Mode = GPIO_MODE_OUTPUT_PP;
+  gpioD0.Pull = GPIO_NOPULL;
+  gpioD0.Speed = GPIO_SPEED_HIGH;
+  gpioD0.Pin = GPIO_PIN_7;
+	
+	// Initialising pins (D0 - D7)
+	HAL_GPIO_Init(GPIOC, &gpioD0);
+	
+}
+
 
 void SystemClock_Config(void) {
 	RCC_OscInitTypeDef RCC_OscInitStruct;
@@ -51,17 +76,17 @@ void SystemClock_Config(void) {
 void wait(int delay) {
 	
 	int i;
-  for(i=0; i<40000000 ;i++);
+  for(i=0; i<20000000 ;i++);
 }
 
 void checkCoordsDrinks(int x, int y) {
 	
-		if ((x>=155) && (x<=305) && (y>=120) && (y<=200)) {
+	if ((x>=155) && (x<=305) && (y>=120) && (y<=200)) {
+		
+		GLCD_ClearScreen(); // TESTING
 			
-			GLCD_ClearScreen(); // TESTING
-			
-		}
 	}
+}
 
 void introScreen(void) {
 	
@@ -105,16 +130,20 @@ int main(void){
 	char buffer[128];
 	
 	HAL_Init(); //Init Hardware Abstraction Layer
-  SystemClock_Config(); //Config Clocks
+	SystemClock_Config(); //Config Clocks
 	Touch_Initialize();
-  GLCD_Initialize(); //Initialise GLCD
-  GLCD_SetFont(&GLCD_Font_16x24);
+	GLCD_Initialize(); //Initialise GLCD
+	GLCD_SetFont(&GLCD_Font_16x24);
+	
+	initialisePins();
 	
 	GLCD_ClearScreen(); // Clears screen on startup
 	
-  introScreen();
+	introScreen();
 	GLCD_ClearScreen();
 	menuScreen();
+	
+	HAL_GPIO_WritePin(GPIOC, gpioD0.Pin, GPIO_PIN_SET);
 	
 	for(;;) {
 			Touch_GetState(&tsc_state);
