@@ -48,7 +48,45 @@ void SystemClock_Config(void) {
 	HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_5);
 }
 
-void initialiseMenu(void) {
+void wait(int delay) {
+	
+	int i;
+  for(i=0; i<40000000 ;i++);
+}
+
+void checkCoordsDrinks(int x, int y) {
+	
+		if ((x>=155) && (x<=305) && (y>=120) && (y<=200)) {
+			
+			GLCD_ClearScreen(); // TESTING
+			
+		}
+	}
+
+void introScreen(void) {
+	
+	// Declares build date and time
+	char date[] = __DATE__;
+	char time[] = __TIME__;
+	
+	GLCD_DrawString(0, 0,  "EMBEDDED SYSTEMS COURSEWORK");
+	GLCD_DrawString(0, 30, "THOMAS YEOMANS - UEA");
+	
+	GLCD_DrawString(0, 100, "BUILD DATE AND TIME:");
+	GLCD_DrawString(0, 130, date);
+	GLCD_DrawString(0, 160, time);
+	
+	GLCD_DrawString(0, 230, "V0.11");
+	
+	wait(5000000); 
+	
+}
+
+void menuScreen(void) {
+	
+	HAL_Init(); 					// Init Hardware Abstraction Layer
+  SystemClock_Config(); // Config Clocks
+  GLCD_Initialize();    // Init GLCD
 	
 	GLCD_SetBackgroundColor(GLCD_COLOR_BLUE);
   GLCD_SetForegroundColor(GLCD_COLOR_WHITE);
@@ -56,37 +94,10 @@ void initialiseMenu(void) {
   GLCD_SetBackgroundColor(GLCD_COLOR_WHITE);
   GLCD_SetForegroundColor(GLCD_COLOR_BLUE);
 	
-	
 	GLCD_DrawString(150, 150, "  Drinks  ");
 	GLCD_DrawRectangle(155, 120, 150, 80);
 	
-	GLCD_SetBackgroundColor(GLCD_COLOR_GREEN);
-  GLCD_SetForegroundColor(GLCD_COLOR_BLACK);
-
 }
-
-void signal(void) {
-	
-	unsigned int i;
-	
-	LED_Initialize(); 
-	
-	  LED_On (0U);                                
-    for (i = 0; i < TIME; i++)
-			/* empty statement */ ;   
-    LED_Off (0U);  
-    for (i = 0; i < TIME; i++)
-			/* empty statement */ ;
-	}
-
-void checkCoordsDrinks(int x, int y) {
-	
-		if ((x>=155) && (x<=305) && (y>=120) && (y<=200)) {
-			
-			signal();
-			
-		}
-	}
 
 int main(void){
 	
@@ -96,18 +107,20 @@ int main(void){
 	HAL_Init(); //Init Hardware Abstraction Layer
   SystemClock_Config(); //Config Clocks
 	Touch_Initialize();
-  GLCD_Initialize(); //Init GLCD
-  GLCD_ClearScreen();
+  GLCD_Initialize(); //Initialise GLCD
   GLCD_SetFont(&GLCD_Font_16x24);
-  
-	initialiseMenu();
-	signal();
+	
+	GLCD_ClearScreen(); // Clears screen on startup
+	
+  introScreen();
+	GLCD_ClearScreen();
+	menuScreen();
 	
 	for(;;) {
 			Touch_GetState(&tsc_state);
 			if(tsc_state.pressed) {
 				sprintf(buffer , "%i , %i", tsc_state.x, tsc_state.y);
-				GLCD_DrawString(10, 60, buffer);	
+				//GLCD_DrawString(10, 60, buffer);	
 				checkCoordsDrinks(tsc_state.x, tsc_state.y);
 			}
 		}

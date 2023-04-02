@@ -1,8 +1,8 @@
 .\objects\main.o: main.c
 .\objects\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
 .\objects\main.o: C:\Keil_v5\ARM\PACK\Keil\STM32F7xx_DFP\2.11.0\Drivers\STM32F7xx_HAL_Driver\Inc\stm32f7xx_hal.h
-.\objects\main.o: C:\Users\Yeomans\Desktop\University\Year 3\Semester 2\Embedded Systems\Coursework\CW1\RTE\Device\STM32F746NGHx\stm32f7xx_hal_conf.h
-.\objects\main.o: C:\Users\Yeomans\Desktop\University\Year 3\Semester 2\Embedded Systems\Coursework\CW1\RTE\RTE_Components.h
+.\objects\main.o: C:\Users\Yeomans\Documents\GitHub\EmbeddedSystemsCW001\RTE\Device\STM32F746NGHx\stm32f7xx_hal_conf.h
+.\objects\main.o: C:\Users\Yeomans\Documents\GitHub\EmbeddedSystemsCW001\RTE\RTE_Components.h
 .\objects\main.o: C:\Keil_v5\ARM\PACK\Keil\STM32F7xx_DFP\2.11.0\Drivers\STM32F7xx_HAL_Driver\Inc\stm32f7xx_hal_rcc.h
 .\objects\main.o: C:\Keil_v5\ARM\PACK\Keil\STM32F7xx_DFP\2.11.0\Drivers\STM32F7xx_HAL_Driver\Inc\stm32f7xx_hal_def.h
 .\objects\main.o: C:\Keil_v5\ARM\PACK\Keil\STM32F7xx_DFP\2.11.0\Drivers\CMSIS\Device\ST\STM32F7xx\Include\stm32f7xx.h

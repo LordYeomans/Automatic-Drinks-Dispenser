@@ -954,19 +954,18 @@ ARM Macro Assembler    Page 15
               00000000 
 Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M7.fp.sp --apcs=
 interwork --depend=.\objects\startup_stm32f746xx.d -o.\objects\startup_stm32f74
-6xx.o -I"C:\Users\Yeomans\Desktop\University\Year 3\Semester 2\Embedded Systems
-\Coursework\CW1\RTE" -I"C:\Users\Yeomans\Desktop\University\Year 3\Semester 2\E
-mbedded Systems\Coursework\CW1\RTE\Device\STM32F746NGHx" -IC:\Keil_v5\ARM\PACK\
-ARM\CMSIS\4.5.0\CMSIS\Include -IC:\Keil_v5\ARM\PACK\ARM\CMSIS\4.5.0\CMSIS\RTOS\
-RTX\INC -IC:\Keil_v5\ARM\PACK\Keil\MDK-Middleware\7.0.0\Board -IC:\Keil_v5\ARM\
-PACK\Keil\STM32F7xx_DFP\2.11.0\Drivers\BSP\STM32746G-Discovery -IC:\Keil_v5\ARM
-\PACK\Keil\STM32F7xx_DFP\2.11.0\Drivers\CMSIS\Device\ST\STM32F7xx\Include -IC:\
-Keil_v5\ARM\PACK\Keil\STM32F7xx_DFP\2.11.0\Drivers\STM32F7xx_HAL_Driver\Inc -IC
-:\Keil_v5\ARM\PACK\Keil\STM32F7xx_DFP\2.11.0\MDK\Boards\ST\STM32F746G_Discovery
-\Common --predefine="__RTX SETA 1" --predefine="__EVAL SETA 1" --predefine="__U
-VISION_VERSION SETA 518" --predefine="_RTE_ SETA 1" --predefine="STM32F746xx SE
-TA 1" --list=.\listings\startup_stm32f746xx.lst RTE\Device\STM32F746NGHx\startu
-p_stm32f746xx.s
+6xx.o -IC:\Users\Yeomans\Documents\GitHub\EmbeddedSystemsCW001\RTE -IC:\Users\Y
+eomans\Documents\GitHub\EmbeddedSystemsCW001\RTE\Device\STM32F746NGHx -IC:\Keil
+_v5\ARM\PACK\ARM\CMSIS\4.5.0\CMSIS\Include -IC:\Keil_v5\ARM\PACK\ARM\CMSIS\4.5.
+0\CMSIS\RTOS\RTX\INC -IC:\Keil_v5\ARM\PACK\Keil\MDK-Middleware\7.0.0\Board -IC:
+\Keil_v5\ARM\PACK\Keil\STM32F7xx_DFP\2.11.0\Drivers\BSP\STM32746G-Discovery -IC
+:\Keil_v5\ARM\PACK\Keil\STM32F7xx_DFP\2.11.0\Drivers\CMSIS\Device\ST\STM32F7xx\
+Include -IC:\Keil_v5\ARM\PACK\Keil\STM32F7xx_DFP\2.11.0\Drivers\STM32F7xx_HAL_D
+river\Inc -IC:\Keil_v5\ARM\PACK\Keil\STM32F7xx_DFP\2.11.0\MDK\Boards\ST\STM32F7
+46G_Discovery\Common --predefine="__RTX SETA 1" --predefine="__EVAL SETA 1" --p
+redefine="__UVISION_VERSION SETA 518" --predefine="_RTE_ SETA 1" --predefine="S
+TM32F746xx SETA 1" --list=.\listings\startup_stm32f746xx.lst RTE\Device\STM32F7
+46NGHx\startup_stm32f746xx.s
 
 
 
