@@ -9,6 +9,7 @@ Automatic Drinks Dispenser
 https://easyeda.com/components/5011AS-7-Segment-Display_0a0ce76fbaa8485891155d0c10b4e91b
 https://www.st.com/resource/en/user_manual/dm00190424-discovery-kit-for-stm32f7-series-with-stm32f746ng-mcu-stmicroelectronics.pdf - Page 23
 https://www.electronics-tutorials.ws/blog/7-segment-display-tutorial.html
+http://www.soatmon.com/2021/09/no-contact-fluid-sensor.html
 */
 
 #include <stdio.h>
@@ -108,7 +109,7 @@ void introScreen(void) {
 	
 	GLCD_DrawString(0, 230, "V0.12");
 	
-	wait(5000000); 
+	wait(3000000); 
 	
 }
 
@@ -143,6 +144,8 @@ void checkCoordsDrinks(int x, int y) {
 		if ((x>=10) && (x<=120) && (y>=140) && (y<=180)) {
 			HAL_GPIO_WritePin(GPIOC, gpioD0.Pin, GPIO_PIN_SET);
 			GLCD_ClearScreen(); // TESTING
+			GLCD_DrawRectangle(90, 135, 280, 50);
+			GLCD_DrawString(100, 150, "Pouring Water...");
 		}
 		
 		// Check for Orange Juice option

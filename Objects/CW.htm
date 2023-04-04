@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\Objects\CW.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\Objects\CW.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060061: Last Updated: Mon Apr 03 17:14:51 2023
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060061: Last Updated: Mon Apr 03 22:57:17 2023
 <BR><P>
 <H3>Maximum Stack Usage =        504 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -927,6 +927,7 @@ Global Symbols
 <LI><a href="#[c4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GLCD_DrawHLine
 </UL>
 <BR>[Called By]<UL><LI><a href="#[10f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;menuScreen
+<LI><a href="#[ff]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;checkCoordsDrinks
 </UL>
 
 <P><STRONG><a name="[c6]"></a>GLCD_DrawString</STRONG> (Thumb, 38 bytes, Stack size 16 bytes, glcd_746g_discovery.o(i.GLCD_DrawString))
@@ -936,6 +937,7 @@ Global Symbols
 </UL>
 <BR>[Called By]<UL><LI><a href="#[10f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;menuScreen
 <LI><a href="#[105]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;introScreen
+<LI><a href="#[ff]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;checkCoordsDrinks
 </UL>
 
 <P><STRONG><a name="[c5]"></a>GLCD_DrawVLine</STRONG> (Thumb, 38 bytes, Stack size 12 bytes, glcd_746g_discovery.o(i.GLCD_DrawVLine))
@@ -1293,10 +1295,12 @@ Global Symbols
 
 <P><STRONG><a name="[8e]"></a>_mutex_release</STRONG> (Thumb, 18 bytes, Stack size 0 bytes, rtx_conf_cm.o(i._mutex_release), UNUSED, KEPT)
 
-<P><STRONG><a name="[ff]"></a>checkCoordsDrinks</STRONG> (Thumb, 88 bytes, Stack size 16 bytes, main.o(i.checkCoordsDrinks))
-<BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = checkCoordsDrinks
+<P><STRONG><a name="[ff]"></a>checkCoordsDrinks</STRONG> (Thumb, 112 bytes, Stack size 16 bytes, main.o(i.checkCoordsDrinks))
+<BR><BR>[Stack]<UL><LI>Max Depth = 60<LI>Call Chain = checkCoordsDrinks &rArr; GLCD_DrawString &rArr; GLCD_DrawChar
 </UL>
 <BR>[Calls]<UL><LI><a href="#[cc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_WritePin
+<LI><a href="#[c6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GLCD_DrawString
+<LI><a href="#[c3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GLCD_DrawRectangle
 <LI><a href="#[100]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GLCD_ClearScreen
 </UL>
 <BR>[Called By]<UL><LI><a href="#[8a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
