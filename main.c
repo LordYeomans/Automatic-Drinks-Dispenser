@@ -88,6 +88,7 @@ void SystemClock_Config(void) {
 	HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_5);
 }
 
+// Simple delay 
 void wait(int delay) {
 	
 	int i;
@@ -107,7 +108,7 @@ void introScreen(void) {
 	GLCD_DrawString(0, 130, date);
 	GLCD_DrawString(0, 160, time);
 	
-	GLCD_DrawString(0, 230, "V0.12");
+	GLCD_DrawString(0, 230, "V0.13");
 	
 	wait(3000000); 
 	
@@ -115,17 +116,16 @@ void introScreen(void) {
 
 void menuScreen(void) {
 	
-	HAL_Init(); 					// Init Hardware Abstraction Layer
+	HAL_Init(); 					// Initialise Hardware Abstraction Layer
   SystemClock_Config(); // Config Clocks
-  GLCD_Initialize();    // Init GLCD
+  GLCD_Initialize();    // Initialise GLCD
+	
+	GLCD_SetFont(&GLCD_Font_16x24);
 	
 	GLCD_SetBackgroundColor(GLCD_COLOR_BLUE);
   GLCD_SetForegroundColor(GLCD_COLOR_WHITE);
-  GLCD_DrawString(0, 0, "  Automatic Drinks Dispenser  ");
-  GLCD_SetBackgroundColor(GLCD_COLOR_WHITE);
-  GLCD_SetForegroundColor(GLCD_COLOR_BLUE);
 	
-	GLCD_SetFont(&GLCD_Font_16x24);
+  GLCD_DrawString(0, 0, "  Automatic Drinks Dispenser  ");
 	
 	GLCD_DrawRectangle(10, 135, 100, 50);
 	GLCD_DrawString(20, 150, "Water");
@@ -138,14 +138,28 @@ void menuScreen(void) {
 	
 }
 
+// Not sure if this works yet!
+void pourWater() {
+
+	// Turn pin D0 on
+	HAL_GPIO_WritePin(GPIOC, gpioD0.Pin, GPIO_PIN_SET);
+	
+	// Wait for 3 seconds for the drink to pour
+	wait(3000000);
+	
+	// Turn pin D0 off to stop pouring
+	HAL_GPIO_WritePin(GPIOC, gpioD0.Pin, GPIO_PIN_RESET);
+	
+}
+
 void checkCoordsDrinks(int x, int y) {
 	
 		// Check for Water option
 		if ((x>=10) && (x<=120) && (y>=140) && (y<=180)) {
-			HAL_GPIO_WritePin(GPIOC, gpioD0.Pin, GPIO_PIN_SET);
-			GLCD_ClearScreen(); // TESTING
 			GLCD_DrawRectangle(90, 135, 280, 50);
 			GLCD_DrawString(100, 150, "Pouring Water...");
+			pourWater();
+			GLCD_ClearScreen();
 		}
 		
 		// Check for Orange Juice option
@@ -185,7 +199,7 @@ int main(void){
 			Touch_GetState(&tsc_state);
 			if(tsc_state.pressed) {
 				sprintf(buffer , "%i , %i", tsc_state.x, tsc_state.y);
-				//GLCD_DrawString(10, 60, buffer);	
+				//GLCD_DrawString(10, 60, buffer); // Shows coordinates on screen, useful for checking input
 				checkCoordsDrinks(tsc_state.x, tsc_state.y);
 			}
 		}
