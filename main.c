@@ -10,6 +10,7 @@ https://easyeda.com/components/5011AS-7-Segment-Display_0a0ce76fbaa8485891155d0c
 https://www.st.com/resource/en/user_manual/dm00190424-discovery-kit-for-stm32f7-series-with-stm32f746ng-mcu-stmicroelectronics.pdf - Page 23
 https://www.electronics-tutorials.ws/blog/7-segment-display-tutorial.html
 http://www.soatmon.com/2021/09/no-contact-fluid-sensor.html
+https://www.futurlec.com/74LS/74LS08.shtml
 */
 
 #include <stdio.h>
@@ -92,7 +93,7 @@ void SystemClock_Config(void) {
 void wait(int delay) {
 	
 	int i;
-  for(i=0; i<20000000 ;i++);
+  for(i=0; i<delay ;i++);
 }
 
 void introScreen(void) {
@@ -108,9 +109,9 @@ void introScreen(void) {
 	GLCD_DrawString(0, 130, date);
 	GLCD_DrawString(0, 160, time);
 	
-	GLCD_DrawString(0, 230, "V0.13");
+	GLCD_DrawString(0, 230, "V0.15");
 	
-	wait(3000000); 
+	wait(200000000); 
 	
 }
 
@@ -127,6 +128,9 @@ void menuScreen(void) {
 	
   GLCD_DrawString(0, 0, "  Automatic Drinks Dispenser  ");
 	
+	GLCD_SetBackgroundColor(GLCD_COLOR_WHITE);
+  GLCD_SetForegroundColor(GLCD_COLOR_BLUE);
+	
 	GLCD_DrawRectangle(10, 135, 100, 50);
 	GLCD_DrawString(20, 150, "Water");
 	
@@ -138,18 +142,36 @@ void menuScreen(void) {
 	
 }
 
-// Not sure if this works yet!
 void pourWater() {
 
 	// Turn pin D0 on
 	HAL_GPIO_WritePin(GPIOC, gpioD0.Pin, GPIO_PIN_SET);
 	
-	// Wait for 3 seconds for the drink to pour
-	wait(3000000);
+	// Wait for 5 seconds for the drink to pour
+	wait(500000000);
 	
 	// Turn pin D0 off to stop pouring
 	HAL_GPIO_WritePin(GPIOC, gpioD0.Pin, GPIO_PIN_RESET);
 	
+}
+
+void pouringDrink(int drink) {
+
+	if (drink == 1) {
+		GLCD_DrawString(100, 150, " Pouring water... ");
+		
+		GLCD_SetBackgroundColor(GLCD_COLOR_BLUE);
+		GLCD_SetForegroundColor(GLCD_COLOR_WHITE);
+		GLCD_DrawString(0, 0, "  Automatic Drinks Dispenser  ");
+		
+		pourWater();
+		
+		GLCD_SetBackgroundColor(GLCD_COLOR_WHITE);
+		GLCD_SetForegroundColor(GLCD_COLOR_BLUE);
+		GLCD_DrawString(70, 150, " Successfully poured! ");
+		
+		wait(300000000);
+	}
 }
 
 void checkCoordsDrinks(int x, int y) {
@@ -157,10 +179,14 @@ void checkCoordsDrinks(int x, int y) {
 		// Check for Water option
 		if ((x>=10) && (x<=120) && (y>=140) && (y<=180)) {
 			GLCD_DrawRectangle(90, 135, 280, 50);
-			GLCD_DrawString(100, 150, "Pouring Water...");
-			pourWater();
 			GLCD_ClearScreen();
+			pouringDrink(1);
+			
+			GLCD_ClearScreen();
+			menuScreen();
 		}
+		
+		/*
 		
 		// Check for Orange Juice option
 		if ((x>=170) && (x<=280) && (y>=140) && (y<=180)) {
@@ -173,6 +199,8 @@ void checkCoordsDrinks(int x, int y) {
 			//HAL_GPIO_WritePin(GPIOC, gpioD0.Pin, GPIO_PIN_SET);
 			GLCD_ClearScreen(); // TESTING
 		}
+		
+		*/
 }
 
 int main(void){
@@ -193,6 +221,9 @@ int main(void){
 	introScreen();
 	GLCD_ClearScreen();
 	menuScreen();	
+	
+	// Turn pin D1 on - water level sensor
+	HAL_GPIO_WritePin(GPIOC, gpioD1.Pin, GPIO_PIN_SET);
 	
 	// Constantly check for user input - GLCD Touchscreen
 	for(;;) {
