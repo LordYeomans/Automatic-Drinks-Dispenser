@@ -1,16 +1,26 @@
 /*
+
 University of East Anglia
 Year 3 - Embedded Systems Coursework
 Thomas Yeomans
 Automatic Drinks Dispenser
-*/
 
-/* Useful links:
+Useful links:
 https://easyeda.com/components/5011AS-7-Segment-Display_0a0ce76fbaa8485891155d0c10b4e91b
 https://www.st.com/resource/en/user_manual/dm00190424-discovery-kit-for-stm32f7-series-with-stm32f746ng-mcu-stmicroelectronics.pdf - Page 23
 https://www.electronics-tutorials.ws/blog/7-segment-display-tutorial.html
 http://www.soatmon.com/2021/09/no-contact-fluid-sensor.html
 https://www.futurlec.com/74LS/74LS08.shtml
+https://www.st.com/resource/en/application_note/an4759-using-the-hardware-realtime-clock-rtc-and-the-tamper-management-unit-tamp-with-stm32-microcontrollers-stmicroelectronics.pdf
+
+Components list:
+1 - GLCD Touchscreen, STM32F746NG board
+2 - 4.5V air pumps
+1 - Piezo Buzzer
+2 - Non Contact Liquid Level Sensors
+2/4 - LEDs
+2 - 5V Relays
+
 */
 
 #include <stdio.h>
@@ -31,14 +41,16 @@ uint32_t HAL_GetTick(void) {
 }
 #endif
 
-// Pins D0 and D1
+// Pins D0, D1 and D2
 GPIO_InitTypeDef gpioD0;
 GPIO_InitTypeDef gpioD1;
+GPIO_InitTypeDef gpioD2;
 
 void initialisePins(void) {
 	
-	// Enabling clock for C base
+	// Enabling clock for C and G base
 	__HAL_RCC_GPIOC_CLK_ENABLE();
+	__HAL_RCC_GPIOG_CLK_ENABLE();
 
 	// Set mode as output, nopull
 	gpioD0.Mode = GPIO_MODE_OUTPUT_PP;
@@ -52,9 +64,16 @@ void initialisePins(void) {
   gpioD1.Speed = GPIO_SPEED_HIGH;
   gpioD1.Pin = GPIO_PIN_6;
 	
-	// Initialising pins (D0 - D7)
+	// Set mode as output, nopull
+	gpioD2.Mode = GPIO_MODE_OUTPUT_PP;
+  gpioD2.Pull = GPIO_NOPULL;
+  gpioD2.Speed = GPIO_SPEED_HIGH;
+  gpioD2.Pin = GPIO_PIN_6;
+	
+	// Initialising pins (D0, D1 & D2)
 	HAL_GPIO_Init(GPIOC, &gpioD0);
 	HAL_GPIO_Init(GPIOC, &gpioD1);
+	HAL_GPIO_Init(GPIOG, &gpioD2);
 	
 }
 
@@ -109,7 +128,7 @@ void introScreen(void) {
 	GLCD_DrawString(0, 130, date);
 	GLCD_DrawString(0, 160, time);
 	
-	GLCD_DrawString(0, 230, "V0.15");
+	GLCD_DrawString(0, 230, "V0.20");
 	
 	wait(200000000); 
 	
@@ -142,13 +161,26 @@ void menuScreen(void) {
 	
 }
 
+void playBuzzer() {
+
+	// Turn pin D2 on
+	HAL_GPIO_WritePin(GPIOG, gpioD2.Pin, GPIO_PIN_SET);
+	
+	// Play buzzer after pouring for 1 second
+	wait(100000000);
+
+	// Turn pin D2 off to stop pouring
+	HAL_GPIO_WritePin(GPIOG, gpioD2.Pin, GPIO_PIN_RESET);
+	
+}
+
 void pourWater() {
 
 	// Turn pin D0 on
 	HAL_GPIO_WritePin(GPIOC, gpioD0.Pin, GPIO_PIN_SET);
 	
-	// Wait for 5 seconds for the drink to pour
-	wait(500000000);
+	// Wait for 10 seconds for the drink to pour
+	wait(1000000000);
 	
 	// Turn pin D0 off to stop pouring
 	HAL_GPIO_WritePin(GPIOC, gpioD0.Pin, GPIO_PIN_RESET);
@@ -170,7 +202,15 @@ void pouringDrink(int drink) {
 		GLCD_SetForegroundColor(GLCD_COLOR_BLUE);
 		GLCD_DrawString(70, 150, " Successfully poured! ");
 		
+		playBuzzer();
+		
 		wait(300000000);
+	}
+	
+	if (drink == 2) {
+	
+	
+	
 	}
 }
 
@@ -178,10 +218,8 @@ void checkCoordsDrinks(int x, int y) {
 	
 		// Check for Water option
 		if ((x>=10) && (x<=120) && (y>=140) && (y<=180)) {
-			GLCD_DrawRectangle(90, 135, 280, 50);
 			GLCD_ClearScreen();
 			pouringDrink(1);
-			
 			GLCD_ClearScreen();
 			menuScreen();
 		}
