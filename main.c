@@ -10,12 +10,11 @@ https://easyeda.com/components/5011AS-7-Segment-Display_0a0ce76fbaa8485891155d0c
 https://www.st.com/resource/en/user_manual/dm00190424-discovery-kit-for-stm32f7-series-with-stm32f746ng-mcu-stmicroelectronics.pdf - Page 23
 https://www.electronics-tutorials.ws/blog/7-segment-display-tutorial.html
 http://www.soatmon.com/2021/09/no-contact-fluid-sensor.html
-https://www.futurlec.com/74LS/74LS08.shtml
 https://www.st.com/resource/en/application_note/an4759-using-the-hardware-realtime-clock-rtc-and-the-tamper-management-unit-tamp-with-stm32-microcontrollers-stmicroelectronics.pdf
 
 Components list:
 1 - GLCD Touchscreen, STM32F746NG board
-2 - 4.5V air pumps
+2 - 12V air pumps
 1 - Piezo Buzzer
 2 - Non Contact Liquid Level Sensors
 2/4 - LEDs
@@ -41,16 +40,19 @@ uint32_t HAL_GetTick(void) {
 }
 #endif
 
-// Pins D0, D1 and D2
+// Pins D0, D1, D2, D3 & D4
 GPIO_InitTypeDef gpioD0;
 GPIO_InitTypeDef gpioD1;
 GPIO_InitTypeDef gpioD2;
+GPIO_InitTypeDef gpioD3;
+GPIO_InitTypeDef gpioD4;
 
 void initialisePins(void) {
 	
-	// Enabling clock for C and G base
+	// Enabling clock for C, G and B base
 	__HAL_RCC_GPIOC_CLK_ENABLE();
 	__HAL_RCC_GPIOG_CLK_ENABLE();
+	__HAL_RCC_GPIOB_CLK_ENABLE();
 
 	// Set mode as output, nopull
 	gpioD0.Mode = GPIO_MODE_OUTPUT_PP;
@@ -70,10 +72,17 @@ void initialisePins(void) {
   gpioD2.Speed = GPIO_SPEED_HIGH;
   gpioD2.Pin = GPIO_PIN_6;
 	
-	// Initialising pins (D0, D1 & D2)
+	// Set mode as output, nopull
+	gpioD3.Mode = GPIO_MODE_OUTPUT_PP;
+  gpioD3.Pull = GPIO_NOPULL;
+  gpioD3.Speed = GPIO_SPEED_HIGH;
+  gpioD3.Pin = GPIO_PIN_4;
+	
+	// Initialising pins (D0, D1, D2 & D3)
 	HAL_GPIO_Init(GPIOC, &gpioD0);
 	HAL_GPIO_Init(GPIOC, &gpioD1);
 	HAL_GPIO_Init(GPIOG, &gpioD2);
+	HAL_GPIO_Init(GPIOB, &gpioD3);
 	
 }
 
@@ -128,7 +137,7 @@ void introScreen(void) {
 	GLCD_DrawString(0, 130, date);
 	GLCD_DrawString(0, 160, time);
 	
-	GLCD_DrawString(0, 230, "V0.20");
+	GLCD_DrawString(0, 230, "V0.30");
 	
 	wait(200000000); 
 	
@@ -150,14 +159,11 @@ void menuScreen(void) {
 	GLCD_SetBackgroundColor(GLCD_COLOR_WHITE);
   GLCD_SetForegroundColor(GLCD_COLOR_BLUE);
 	
-	GLCD_DrawRectangle(10, 135, 100, 50);
-	GLCD_DrawString(20, 150, "Water");
-	
-	GLCD_DrawRectangle(170, 135, 120, 50);
-	GLCD_DrawString(180, 150, "Orange");
-	
-	GLCD_DrawRectangle(360, 135, 100, 50);
-	GLCD_DrawString(370, 150, "Apple");
+	GLCD_DrawRectangle(105, 135, 105, 50);
+	GLCD_DrawString(120, 150, "Water");
+
+	GLCD_DrawRectangle(265, 135, 105, 50);
+	GLCD_DrawString(280, 150, "Apple");
 	
 }
 
@@ -187,6 +193,19 @@ void pourWater() {
 	
 }
 
+void pourApple() {
+
+	// Turn pin D3 on
+	HAL_GPIO_WritePin(GPIOB, gpioD3.Pin, GPIO_PIN_SET);
+	
+	// Wait for 10 seconds for the drink to pour
+	wait(1000000000);
+	
+	// Turn pin D3 off to stop pouring
+	HAL_GPIO_WritePin(GPIOB, gpioD3.Pin, GPIO_PIN_RESET);
+	
+}
+
 void pouringDrink(int drink) {
 
 	if (drink == 1) {
@@ -208,37 +227,43 @@ void pouringDrink(int drink) {
 	}
 	
 	if (drink == 2) {
-	
-	
+		
+		GLCD_DrawString(100, 150, " Pouring apple... ");
+		
+		GLCD_SetBackgroundColor(GLCD_COLOR_BLUE);
+		GLCD_SetForegroundColor(GLCD_COLOR_WHITE);
+		GLCD_DrawString(0, 0, "  Automatic Drinks Dispenser  ");
+		
+		pourApple();
+		
+		GLCD_SetBackgroundColor(GLCD_COLOR_WHITE);
+		GLCD_SetForegroundColor(GLCD_COLOR_BLUE);
+		GLCD_DrawString(70, 150, " Successfully poured! ");
+		
+		playBuzzer();
+		
+		wait(300000000);
 	
 	}
 }
 
 void checkCoordsDrinks(int x, int y) {
-	
+		
 		// Check for Water option
-		if ((x>=10) && (x<=120) && (y>=140) && (y<=180)) {
+		if ((x>=115) && (x<=200) && (y>=140) && (y<=180)) {
 			GLCD_ClearScreen();
 			pouringDrink(1);
 			GLCD_ClearScreen();
 			menuScreen();
 		}
 		
-		/*
-		
-		// Check for Orange Juice option
-		if ((x>=170) && (x<=280) && (y>=140) && (y<=180)) {
-			//HAL_GPIO_WritePin(GPIOC, gpioD0.Pin, GPIO_PIN_SET);
-			GLCD_ClearScreen(); // TESTING
+		// Check for Apple option
+		if ((x>=270) && (x<=370) && (y>=140) && (y<=180)) {
+			GLCD_ClearScreen();
+			pouringDrink(2);
+			GLCD_ClearScreen();
+			menuScreen();
 		}
-		
-		// Check for Apple Juice option
-		if ((x>=360) && (x<=450) && (y>=140) && (y<=180)) {
-			//HAL_GPIO_WritePin(GPIOC, gpioD0.Pin, GPIO_PIN_SET);
-			GLCD_ClearScreen(); // TESTING
-		}
-		
-		*/
 }
 
 int main(void){
