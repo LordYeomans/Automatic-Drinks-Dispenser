@@ -20,6 +20,13 @@ Components list:
 2/4 - LEDs
 2 - 5V Relays
 
+Pins:
+D0 -> Water pump on/off
+D1 -> Water level sensor
+D2 -> Buzzer on/off
+D3 -> Apple pump on/off
+D4 -> Apple level sensor
+
 */
 
 #include <stdio.h>
@@ -41,11 +48,11 @@ uint32_t HAL_GetTick(void) {
 #endif
 
 // Pins D0, D1, D2, D3 & D4
-GPIO_InitTypeDef gpioD0;
-GPIO_InitTypeDef gpioD1;
-GPIO_InitTypeDef gpioD2;
-GPIO_InitTypeDef gpioD3;
-GPIO_InitTypeDef gpioD4;
+GPIO_InitTypeDef gpioD0; // Water pump
+GPIO_InitTypeDef gpioD1; // Water level sensor
+GPIO_InitTypeDef gpioD2; // Buzzer
+GPIO_InitTypeDef gpioD3; // Apple pump
+GPIO_InitTypeDef gpioD4; // Apple level sensor
 
 void initialisePins(void) {
 	
@@ -137,7 +144,7 @@ void introScreen(void) {
 	GLCD_DrawString(0, 130, date);
 	GLCD_DrawString(0, 160, time);
 	
-	GLCD_DrawString(0, 230, "V0.30");
+	GLCD_DrawString(0, 230, "V0.4");
 	
 	wait(200000000); 
 	
