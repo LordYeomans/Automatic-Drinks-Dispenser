@@ -15,7 +15,7 @@ The use of a Graphical Liquid Crystal Display (GLCD) and pumps are able to pour 
 2, 12V air pumps (PYP370-12Z)  
 1, Piezo buzzer (HYDZ)  
 2, Non contact liquid level sensors (XKC-Y25-V)  
-2, 5V Relays (SRD-05VDC-SL-C) 
+2, 5V Relays (SRD-05VDC-SL-C)   
 2, Red LED 5mm (L4RR5000H1D1)
 
 
