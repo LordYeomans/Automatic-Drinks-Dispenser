@@ -85,11 +85,18 @@ void initialisePins(void) {
   gpioD3.Speed = GPIO_SPEED_HIGH;
   gpioD3.Pin = GPIO_PIN_4;
 	
-	// Initialising pins (D0, D1, D2 & D3)
+	// Set mode as output, nopull
+	gpioD4.Mode = GPIO_MODE_OUTPUT_PP;
+  gpioD4.Pull = GPIO_NOPULL;
+  gpioD4.Speed = GPIO_SPEED_HIGH;
+  gpioD4.Pin = GPIO_PIN_7;
+	
+	// Initialising pins (D0, D1, D2, D3 & D4)
 	HAL_GPIO_Init(GPIOC, &gpioD0);
 	HAL_GPIO_Init(GPIOC, &gpioD1);
 	HAL_GPIO_Init(GPIOG, &gpioD2);
 	HAL_GPIO_Init(GPIOB, &gpioD3);
+	HAL_GPIO_Init(GPIOG, &gpioD4);
 	
 }
 
@@ -294,6 +301,9 @@ int main(void){
 	
 	// Turn pin D1 on - water level sensor
 	HAL_GPIO_WritePin(GPIOC, gpioD1.Pin, GPIO_PIN_SET);
+	
+	// Turn pin D4 on - apple level sensor
+	HAL_GPIO_WritePin(GPIOG, gpioD4.Pin, GPIO_PIN_SET);
 	
 	// Constantly check for user input - GLCD Touchscreen
 	for(;;) {
