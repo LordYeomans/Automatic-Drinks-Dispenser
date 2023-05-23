@@ -151,7 +151,7 @@ void introScreen(void) {
 	GLCD_DrawString(0, 130, date);
 	GLCD_DrawString(0, 160, time);
 	
-	GLCD_DrawString(0, 230, "V0.4");
+	GLCD_DrawString(0, 230, "V1.1");
 	
 	wait(200000000); 
 	
@@ -199,8 +199,8 @@ void pourWater() {
 	// Turn pin D0 on
 	HAL_GPIO_WritePin(GPIOC, gpioD0.Pin, GPIO_PIN_SET);
 	
-	// Wait for 10 seconds for the drink to pour
-	wait(1000000000);
+	// Wait for 20 seconds for the drink to pour
+	wait(2000000000);
 	
 	// Turn pin D0 off to stop pouring
 	HAL_GPIO_WritePin(GPIOC, gpioD0.Pin, GPIO_PIN_RESET);
@@ -212,8 +212,8 @@ void pourApple() {
 	// Turn pin D3 on
 	HAL_GPIO_WritePin(GPIOB, gpioD3.Pin, GPIO_PIN_SET);
 	
-	// Wait for 10 seconds for the drink to pour
-	wait(1000000000);
+	// Wait for 15 seconds for the drink to pour
+	wait(1500000000);
 	
 	// Turn pin D3 off to stop pouring
 	HAL_GPIO_WritePin(GPIOB, gpioD3.Pin, GPIO_PIN_RESET);
