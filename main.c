@@ -17,7 +17,7 @@ Components list:
 2 - 12V air pumps
 1 - Piezo Buzzer
 2 - Non Contact Liquid Level Sensors
-2/4 - LEDs
+2 - Red LEDs 5mm
 2 - 5V Relays
 
 Pins:
@@ -29,6 +29,7 @@ D4 -> Apple level sensor
 
 */
 
+// Declare required libraries
 #include <stdio.h>
 #include <string.h>
 #include "stm32f7xx_hal.h"
@@ -54,6 +55,9 @@ GPIO_InitTypeDef gpioD2; // Buzzer
 GPIO_InitTypeDef gpioD3; // Apple pump
 GPIO_InitTypeDef gpioD4; // Apple level sensor
 
+// CRL = Control Registers Lower  = lower 8-bits of the port
+// CRH = Control Registers Higher = higer 8-bits of the port 
+
 void initialisePins(void) {
 	
 	// Enabling clock for C, G and B base
@@ -61,35 +65,37 @@ void initialisePins(void) {
 	__HAL_RCC_GPIOG_CLK_ENABLE();
 	__HAL_RCC_GPIOB_CLK_ENABLE();
 
+	// Set all pins as No pull, output with high speed
+
 	// Set mode as output, nopull
 	gpioD0.Mode = GPIO_MODE_OUTPUT_PP;
-  gpioD0.Pull = GPIO_NOPULL;
-  gpioD0.Speed = GPIO_SPEED_HIGH;
-  gpioD0.Pin = GPIO_PIN_7;
+  	gpioD0.Pull = GPIO_NOPULL;
+  	gpioD0.Speed = GPIO_SPEED_HIGH;
+  	gpioD0.Pin = GPIO_PIN_7;
 	
 	// Set mode as output, nopull
 	gpioD1.Mode = GPIO_MODE_OUTPUT_PP;
-  gpioD1.Pull = GPIO_NOPULL;
-  gpioD1.Speed = GPIO_SPEED_HIGH;
-  gpioD1.Pin = GPIO_PIN_6;
+  	gpioD1.Pull = GPIO_NOPULL;
+  	gpioD1.Speed = GPIO_SPEED_HIGH;
+  	gpioD1.Pin = GPIO_PIN_6;
 	
 	// Set mode as output, nopull
 	gpioD2.Mode = GPIO_MODE_OUTPUT_PP;
-  gpioD2.Pull = GPIO_NOPULL;
-  gpioD2.Speed = GPIO_SPEED_HIGH;
-  gpioD2.Pin = GPIO_PIN_6;
+  	gpioD2.Pull = GPIO_NOPULL;
+  	gpioD2.Speed = GPIO_SPEED_HIGH;
+ 	gpioD2.Pin = GPIO_PIN_6;
 	
 	// Set mode as output, nopull
 	gpioD3.Mode = GPIO_MODE_OUTPUT_PP;
-  gpioD3.Pull = GPIO_NOPULL;
-  gpioD3.Speed = GPIO_SPEED_HIGH;
-  gpioD3.Pin = GPIO_PIN_4;
+  	gpioD3.Pull = GPIO_NOPULL;
+ 	gpioD3.Speed = GPIO_SPEED_HIGH;
+	gpioD3.Pin = GPIO_PIN_4;
 	
 	// Set mode as output, nopull
 	gpioD4.Mode = GPIO_MODE_OUTPUT_PP;
-  gpioD4.Pull = GPIO_NOPULL;
-  gpioD4.Speed = GPIO_SPEED_HIGH;
-  gpioD4.Pin = GPIO_PIN_7;
+ 	gpioD4.Pull = GPIO_NOPULL;
+ 	gpioD4.Speed = GPIO_SPEED_HIGH;
+ 	gpioD4.Pin = GPIO_PIN_7;
 	
 	// Initialising pins (D0, D1, D2, D3 & D4)
 	HAL_GPIO_Init(GPIOC, &gpioD0);
@@ -99,6 +105,9 @@ void initialisePins(void) {
 	HAL_GPIO_Init(GPIOG, &gpioD4);
 	
 }
+
+// Reset and Clock Controller (RCC)
+// Hardware Abstraction Layer (HAL)
 
 void SystemClock_Config(void) {
 	RCC_OscInitTypeDef RCC_OscInitStruct;
@@ -131,16 +140,18 @@ void SystemClock_Config(void) {
 	HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_5);
 }
 
-// Simple delay 
+// Delay function used to pour drinks for i amount of time 
 void wait(int delay) {
 	
 	int i;
-  for(i=0; i<delay ;i++);
+
+  	for(i=0; i<delay ;i++);
 }
 
+// Intro screen flashes briefly druring start 
 void introScreen(void) {
 	
-	// Declares build date and time
+	// Declares build date and time - used for debugging
 	char date[] = __DATE__;
 	char time[] = __TIME__;
 	
@@ -151,7 +162,7 @@ void introScreen(void) {
 	GLCD_DrawString(0, 130, date);
 	GLCD_DrawString(0, 160, time);
 	
-	GLCD_DrawString(0, 230, "V1.1");
+	GLCD_DrawString(0, 230, "V1.0");
 	
 	wait(200000000); 
 	
@@ -159,19 +170,19 @@ void introScreen(void) {
 
 void menuScreen(void) {
 	
-	HAL_Init(); 					// Initialise Hardware Abstraction Layer
-  SystemClock_Config(); // Config Clocks
-  GLCD_Initialize();    // Initialise GLCD
+	HAL_Init(); 		    // Initialise Hardware Abstraction Layer
+  	SystemClock_Config();   // Config Clocks
+  	GLCD_Initialize();      // Initialise GLCD
 	
-	GLCD_SetFont(&GLCD_Font_16x24);
+	GLCD_SetFont(&GLCD_Font_16x24); // GLCD Font size
 	
 	GLCD_SetBackgroundColor(GLCD_COLOR_BLUE);
-  GLCD_SetForegroundColor(GLCD_COLOR_WHITE);
+  	GLCD_SetForegroundColor(GLCD_COLOR_WHITE);
 	
-  GLCD_DrawString(0, 0, "  Automatic Drinks Dispenser  ");
+  	GLCD_DrawString(0, 0, "  Automatic Drinks Dispenser  ");
 	
 	GLCD_SetBackgroundColor(GLCD_COLOR_WHITE);
-  GLCD_SetForegroundColor(GLCD_COLOR_BLUE);
+  	GLCD_SetForegroundColor(GLCD_COLOR_BLUE);
 	
 	GLCD_DrawRectangle(105, 135, 105, 50);
 	GLCD_DrawString(120, 150, "Water");
