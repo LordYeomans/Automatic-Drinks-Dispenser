@@ -210,8 +210,8 @@ void pourWater() {
 	// Turn pin D0 on
 	HAL_GPIO_WritePin(GPIOC, gpioD0.Pin, GPIO_PIN_SET);
 	
-	// Wait for 20 seconds for the drink to pour
-	wait(2000000000);
+	// Wait for 15 seconds for the drink to pour
+	wait(1500000000);
 	
 	// Turn pin D0 off to stop pouring
 	HAL_GPIO_WritePin(GPIOC, gpioD0.Pin, GPIO_PIN_RESET);

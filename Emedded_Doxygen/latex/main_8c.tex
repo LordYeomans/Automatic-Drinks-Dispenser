@@ -1,0 +1,86 @@
+\doxysection{main.\+c File Reference}
+\hypertarget{main_8c}{}\label{main_8c}\index{main.c@{main.c}}
+
+
+Contains all core code used for the Automatic Drinks Dispenser.  
+
+
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include \"{}stm32f7xx\+\_\+hal.\+h\"{}}\newline
+{\ttfamily \#include \"{}GLCD\+\_\+\+Config.\+h\"{}}\newline
+{\ttfamily \#include \"{}Board\+\_\+\+GLCD.\+h\"{}}\newline
+{\ttfamily \#include \"{}Board\+\_\+\+Touch.\+h\"{}}\newline
+{\ttfamily \#include \"{}Board\+\_\+\+LED.\+h\"{}}\newline
+\doxysubsubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{main_8c_a08d27f452b6ba6c57beae49eaae070e8}\label{main_8c_a08d27f452b6ba6c57beae49eaae070e8} 
+\#define {\bfseries wait\+\_\+delay}~HAL\+\_\+\+Delay
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void {\bfseries initialise\+Pins} (void)
+\item 
+void {\bfseries System\+Clock\+\_\+\+Config} (void)
+\item 
+void {\bfseries wait} (int delay)
+\item 
+void {\bfseries intro\+Screen} (void)
+\item 
+void {\bfseries menu\+Screen} (void)
+\item 
+void {\bfseries play\+Buzzer} ()
+\item 
+void {\bfseries pour\+Water} ()
+\item 
+void {\bfseries pour\+Apple} ()
+\item 
+void {\bfseries pouring\+Drink} (int drink)
+\item 
+void {\bfseries check\+Coords\+Drinks} (int x, int y)
+\item 
+int {\bfseries main} (void)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{main_8c_a2b791557b4e284380da57c3838b75bfa}\label{main_8c_a2b791557b4e284380da57c3838b75bfa} 
+GLCD\+\_\+\+FONT {\bfseries GLCD\+\_\+\+Font\+\_\+6x8}
+\item 
+\Hypertarget{main_8c_ac626b39f0365742d6019bab92e3e45b1}\label{main_8c_ac626b39f0365742d6019bab92e3e45b1} 
+GLCD\+\_\+\+FONT {\bfseries GLCD\+\_\+\+Font\+\_\+16x24}
+\item 
+GPIO\+\_\+\+Init\+Type\+Def {\bfseries gpio\+D0}
+\item 
+GPIO\+\_\+\+Init\+Type\+Def {\bfseries gpio\+D1}
+\item 
+GPIO\+\_\+\+Init\+Type\+Def {\bfseries gpio\+D2}
+\item 
+GPIO\+\_\+\+Init\+Type\+Def {\bfseries gpio\+D3}
+\item 
+GPIO\+\_\+\+Init\+Type\+Def {\bfseries gpio\+D4}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Contains all core code used for the Automatic Drinks Dispenser. 
+
+\begin{DoxyAuthor}{Author}
+Thomas Yeomans 100323626 
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+V1.\+0 
+\end{DoxyVersion}
+\begin{DoxyDate}{Date}
+29-\/May-\/2023 
+\end{DoxyDate}
+\begin{DoxyAttention}{Attention}
+
+\end{DoxyAttention}
+\doxysubsubsection*{\begin{center}\copyright{} COPYRIGHT(c) 2015 STMicroelectronics\end{center} }
+
+Licensed under MCD-\/\+ST Liberty SW License Agreement V2, (the \"{}\+License\"{}); You may not use this file except in compliance with the License. You may obtain a copy of the License at\+: \begin{DoxyVerb}   http://www.st.com/software_license_agreement_liberty_v2
+\end{DoxyVerb}
+ Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an \"{}\+AS IS\"{} BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License. 
